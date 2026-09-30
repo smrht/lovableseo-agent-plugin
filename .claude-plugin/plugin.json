@@ -9,5 +9,6 @@
   "homepage": "https://github.com/smrht/lovableseo-agent-plugin",
   "repository": "https://github.com/smrht/lovableseo-agent-plugin",
   "license": "MIT",
-  "skills": "./skills/"
+  "skills": "./skills/",
+  "displayName": "LovableSEO"
 }
