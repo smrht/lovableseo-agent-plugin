@@ -1,0 +1,43 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "lovableseo-agent-plugin",
+  "version": "1.0.0",
+  "description": "Diagnose technical SEO in Lovable and React projects by comparing saved raw HTML with the rendered DOM. Inspect titles, canonicals, robots directives and links, then verify a targeted repair. Includes a local Python comparator. No account connection, telemetry or ranking promises.",
+  "author": {
+    "name": "LovableSEO",
+    "url": "https://lovableseo.nl"
+  },
+  "homepage": "https://github.com/smrht/lovableseo-agent-plugin",
+  "repository": "https://github.com/smrht/lovableseo-agent-plugin",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "LovableSEO",
+        "shortDescription": "Check React route SEO",
+        "longDescription": "Diagnose technical SEO in Lovable and React projects by comparing saved raw HTML with the rendered DOM. Inspect titles, canonicals, robots directives and links, then verify a targeted repair. Includes a local Python comparator. No account connection, telemetry or ranking promises.",
+        "developerName": "LovableSEO",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://github.com/smrht/lovableseo-agent-plugin",
+        "supportURL": "https://github.com/smrht/lovableseo-agent-plugin/issues",
+        "privacyPolicyURL": "https://github.com/smrht/lovableseo-agent-plugin/blob/main/PRIVACY.md",
+        "termsOfServiceURL": "https://github.com/smrht/lovableseo-agent-plugin/blob/main/LICENSE",
+        "defaultPrompt": [
+          "Compare this page’s raw HTML with its rendered DOM.",
+          "Find and fix the canonical error in my React route."
+        ],
+        "brandColor": "#20584A",
+        "logo": "./assets/logo.png",
+        "composerIcon": "./assets/logo.png"
+      },
+      "onboardingSkill": "./skills/lovable-seo-check/SKILL.md",
+      "publication": {
+        "release_notes": "Initial release with a local checker, controlled fixtures and explicit runtime verification limits."
+      }
+    }
+  }
+}
