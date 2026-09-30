@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "lovableseo-agent-plugin",
-  "version": "1.0.0",
-  "description": "Diagnose technical SEO in Lovable and React projects by comparing saved raw HTML with the rendered DOM. Inspect titles, canonicals, robots directives and links, then verify a targeted repair. Includes a local Python comparator. No account connection, telemetry or ranking promises.",
+  "version": "1.1.0",
+  "description": "Check technical SEO in Lovable and React projects using saved HTML and rendered DOM. Audit website migrations with saved sitemaps, HTTP captures and explicit redirect mappings. Local Python tools; no account connection, telemetry or ranking promises.",
   "author": {
     "name": "LovableSEO",
     "url": "https://lovableseo.nl"
@@ -15,7 +15,7 @@
       "interface": {
         "displayName": "LovableSEO",
         "shortDescription": "Check React route SEO",
-        "longDescription": "Diagnose technical SEO in Lovable and React projects by comparing saved raw HTML with the rendered DOM. Inspect titles, canonicals, robots directives and links, then verify a targeted repair. Includes a local Python comparator. No account connection, telemetry or ranking promises.",
+        "longDescription": "Check technical SEO in Lovable and React projects using saved HTML and rendered DOM. Audit website migrations with saved sitemaps, HTTP captures and explicit redirect mappings. Local Python tools; no account connection, telemetry or ranking promises.",
         "developerName": "LovableSEO",
         "category": "Developer Tools",
         "capabilities": [
@@ -36,7 +36,7 @@
       },
       "onboardingSkill": "./skills/lovable-seo-check/SKILL.md",
       "publication": {
-        "release_notes": "Initial release with a local checker, controlled fixtures and explicit runtime verification limits."
+        "release_notes": "Adds offline migration checks for explicit URL mappings, HTTP redirects, missing destinations, robots directives and metadata; includes failure/repair tests."
       }
     }
   }

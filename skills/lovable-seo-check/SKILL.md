@@ -23,6 +23,8 @@ It reads local files only and makes no network requests. It reports titles, desc
 
 ## Make the smallest supported fix
 
+For a migration or changed URL structure, read [the migration procedure](references/migration.md). The bundled `scripts/check_migration.py` compares saved old/new sitemaps with explicit replacement mappings and captured HTTP/metadata evidence. It checks redirects, missing destinations and lost metadata without accessing the network or guessing which content should replace a page.
+
 For an authorized repair, change the source of the defect: a route's metadata, a mistaken canonical base, a soft-404 fallback, a robots header, an omitted sitemap route or the existing prerender configuration. Do not install a proxy or paid prerender service as a default. Do not replace every route canonical with the homepage.
 
 If raw HTML lacks route-specific metadata but rendered HTML has it, report dependence on JavaScript rather than claiming failed indexing. Decide whether to improve initial HTML using the current framework and the site's actual crawler requirements. If adding prerendering, verify deep links, navigation, redirects, authenticated routes and excluded pages; do not create a second inconsistent content source.
