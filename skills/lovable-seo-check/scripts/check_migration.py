@@ -34,6 +34,8 @@ def sitemap(text):
     if '<!DOCTYPE' in text.upper() or '<!ENTITY' in text.upper():
         raise ValueError('Sitemap declarations and entities are not supported.')
     root = ET.fromstring(text)
+    if any(element.tag.startswith('{http://www.w3.org/2001/XInclude}') for element in root.iter()):
+        raise ValueError('Sitemap XInclude is not supported.')
     if root.tag.rsplit('}', 1)[-1] != 'urlset':
         raise ValueError('Supply a URL sitemap, not a sitemap index. Combine its child URL sets first.')
     values = []
@@ -47,6 +49,17 @@ def sitemap(text):
     if not values or len(values) > MAX_URLS or len(set(values)) != len(values):
         raise ValueError('Sitemap must contain 1–5000 unique URLs.')
     return set(values)
+
+
+def load_json(text):
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError('Conflicting duplicate JSON keys; supply one unambiguous capture per URL.')
+            result[key] = value
+        return result
+    return json.loads(text, object_pairs_hook=unique)
 
 
 def captures(data):
@@ -167,9 +180,9 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         result = audit(sitemap(read(args.old)), sitemap(read(args.new)),
-                       json.loads(read(args.responses)),
-                       json.loads(read(args.mapping)) if args.mapping else None,
-                       json.loads(read(args.baseline)) if args.baseline else None)
+                       load_json(read(args.responses)),
+                       load_json(read(args.mapping)) if args.mapping else None,
+                       load_json(read(args.baseline)) if args.baseline else None)
     except (ValueError, OSError, ET.ParseError) as exc:
         print(json.dumps({'error': str(exc)}))
         return 2

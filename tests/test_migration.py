@@ -94,6 +94,19 @@ class Migration(unittest.TestCase):
     def test_namespaced_sitemap(self):
         self.assertEqual(m.sitemap('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://example.com/a?a=1&amp;b=2</loc></url></urlset>'), {'https://example.com/a?a=1&b=2'})
 
+    def test_conflicting_captures_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'Conflicting duplicate'):
+            m.load_json('{"https://example.com/a":{"status":200},"https://example.com/a":{"status":404}}')
+
+    def test_external_entity_and_xinclude_rejected_without_reading(self):
+        from unittest.mock import patch
+        with patch('builtins.open', side_effect=AssertionError('No file reads allowed')):
+            for content in (
+                '<!DOCTYPE urlset [<!ENTITY x SYSTEM "file:///canary">]><urlset><url><loc>&x;</loc></url></urlset>',
+                '<urlset xmlns:xi="http://www.w3.org/2001/XInclude"><url><loc>https://example.com/a</loc></url><xi:include href="file:///canary"/></urlset>'):
+                with self.assertRaises(ValueError):
+                    m.sitemap(content)
+
     def test_malformed_sitemaps(self):
         for bad in ('<sitemapindex/>', '<urlset/>', '<!DOCTYPE x><urlset/>',
                     '<urlset><url><loc>https://example.com/a</loc></url><url><loc>https://example.com/a</loc></url></urlset>'):
