@@ -1,6 +1,6 @@
 {
   "name": "lovableseo-agent-plugin",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Check technical SEO in Lovable and React projects using saved HTML and rendered DOM. Audit website migrations with saved sitemaps, HTTP captures and explicit redirect mappings. Local Python tools; no account connection, telemetry or ranking promises.",
   "author": {
     "name": "LovableSEO",
@@ -10,5 +10,15 @@
   "repository": "https://github.com/smrht/lovableseo-agent-plugin",
   "license": "MIT",
   "skills": "./skills/",
-  "displayName": "LovableSEO"
+  "displayName": "LovableSEO",
+  "keywords": [
+    "lovable",
+    "lovable seo",
+    "technical seo",
+    "react seo",
+    "seo audit",
+    "website migration",
+    "redirects",
+    "sitemap"
+  ]
 }
