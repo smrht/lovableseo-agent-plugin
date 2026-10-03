@@ -5,6 +5,9 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin,urlsplit
 LIMIT=5*1024*1024
+def display_url(value):
+    # Userinfo is never useful SEO evidence, and may contain credentials.
+    return re.sub(r'(//)[^/?#]*@',r'\1[redacted]@',value)
 class Signals(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True);self.in_head=False;self.capture=None;self.buffer=[]
@@ -38,16 +41,26 @@ def compare(url,raw,rendered):
         if len(data['descriptions'])!=1 or not data['descriptions'][0].strip():add(stage,'description_missing_or_multiple',data['descriptions'])
         if len(data['canonicals'])!=1:add(stage,'canonical_missing_or_multiple',data['canonicals'])
         else:
-            c=data['canonicals'][0];absolute=urljoin(url,c)
-            if not c.strip() or urlsplit(absolute).scheme not in ('https','http') or urlsplit(absolute).fragment:add(stage,'canonical_invalid',c)
-            elif absolute!=url:add(stage,'canonical_differs_from_expected',absolute)
-            if not urlsplit(c).scheme:add(stage,'canonical_is_relative',c)
+            c=data['canonicals'][0]
+            try:
+                absolute=urljoin(url,c);target=urlsplit(absolute)
+                if not c.strip() or target.scheme not in ('https','http') or not target.hostname or target.username or target.password or target.fragment:add(stage,'canonical_invalid',display_url(c))
+                elif absolute!=url:add(stage,'canonical_differs_from_expected',display_url(absolute))
+                if not urlsplit(c).scheme:add(stage,'canonical_is_relative',display_url(c))
+            except ValueError:
+                add(stage,'canonical_invalid',display_url(c))
         for directive in data['robots']:
             tokens=set(re.split(r'[\s,]+',directive['value'].lower()))
             if tokens & {'noindex','none'}:add(stage,'noindex_present',directive)
         if not data['h1']:add(stage,'h1_missing',[])
     for key in ('titles','descriptions','canonicals','robots','h1','links'):
         if result['raw'][key]!=result['rendered'][key]:add('comparison','changes_after_javascript',key)
+    for stage in ('raw','rendered'):
+        for key in ('canonicals','links'):
+            result[stage][key]=[display_url(value) for value in result[stage][key]]
+    for finding in result['findings']:
+        if isinstance(finding['evidence'],list):
+            finding['evidence']=[display_url(value) if isinstance(value,str) else value for value in finding['evidence']]
     return result
 def read(path):
     if path.stat().st_size>LIMIT:raise ValueError('Capture exceeds 5 MiB.')
