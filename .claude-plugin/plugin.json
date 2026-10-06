@@ -1,6 +1,6 @@
 {
   "name": "lovableseo-agent-plugin",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Check technical SEO in Lovable and React projects using saved HTML and rendered DOM. Audit website migrations with saved sitemaps, HTTP captures and explicit redirect mappings. Local Python tools; no account connection, telemetry or ranking promises.",
   "author": {
     "name": "LovableSEO",
@@ -20,5 +20,6 @@
     "website migration",
     "redirects",
     "sitemap"
-  ]
+  ],
+  "icon": "assets/icon.png"
 }
